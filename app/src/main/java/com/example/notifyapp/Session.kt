@@ -10,7 +10,6 @@ class Session {
     lateinit var editor: SharedPreferences.Editor
     lateinit var con: Context
     var PRIVATEMODE: Int = 0
-
     constructor(con: Context) {
         this.con = con
         pref = con.getSharedPreferences(PREF_NAME, PRIVATEMODE)

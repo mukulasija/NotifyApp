@@ -18,19 +18,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth : FirebaseAuth
     private lateinit var binding : ActivityMainBinding
     private lateinit var session : Session
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_PHONE_STATE)!=PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_PHONE_STATE,android.Manifest.permission.READ_CALL_LOG),369)
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_PHONE_STATE,android.Manifest.permission.READ_CALL_LOG,android.Manifest.permission.READ_CONTACTS),369)
         }
         auth = Firebase.auth
         session = Session(this)
         if(session.isLoggedin())
         {
-            var intent = Intent(applicationContext, SignupActivity::class.java)
+            var intent = Intent(applicationContext, EnableActivity::class.java)
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.putExtra("uid", session.getUserid())
             startActivity(intent)
@@ -43,6 +44,12 @@ class MainActivity : AppCompatActivity() {
         binding.loginBtn.setOnClickListener {
             val em= binding.loginEmailid.text.toString()
             val pass = binding.loginPassword.text.toString()
+
+            val inputResult =  validateInput(em,pass)
+            inputResult?.let {
+                toast(inputResult)
+                return@setOnClickListener
+            }
             auth.signInWithEmailAndPassword(em, pass).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     toast("Logged in Successfully")
@@ -50,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                     val usid = auth.currentUser!!.uid.toString()
                     //toast(usid)
                     session.createLoginSession(usid)
-                    val i = Intent(this, SignupActivity::class.java)
+                    val i = Intent(this, EnableActivity::class.java)
                     i.putExtra("uid", usid)
                     startActivity(i)
                     finish()
@@ -94,6 +101,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-private fun String.isEmailValid(): Boolean {
+fun String.isEmailValid(): Boolean {
     return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }
