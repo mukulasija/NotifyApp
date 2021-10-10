@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,6 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NotifyApp">
         <activity
+            android:name=".EnableActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SignupActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -19,9 +26,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <receiver android:name=".model.CallReciever"
+
+        <receiver
+            android:name=".model.CallReciever"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
