@@ -51,6 +51,7 @@ var oldstate : String?  = TelephonyManager.EXTRA_STATE_IDLE
                     val phoneno = p1.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
                     if(!phoneno.equals("") && phoneno!=null && !phoneno.isEmpty()) {
                         showToastMsg(p0!!, "Incomming call" + phoneno)
+
                     }
 //                    oldstate = p1.getStringExtra(TelephonyManager.EXTRA_STATE)
                 }
